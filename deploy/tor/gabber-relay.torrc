@@ -1,0 +1,4 @@
+# Add these directives to the Tor daemon configuration on the relay host.
+# The Tor service account must be able to create and access this directory.
+HiddenServiceDir /var/lib/tor/gabber-relay/
+HiddenServicePort 80 127.0.0.1:8787

@@ -1,0 +1,28 @@
+[Unit]
+Description=Gabber onion-only message relay
+After=network-online.target tor.service
+Wants=network-online.target tor.service
+
+[Service]
+Type=simple
+User=gabber
+Group=gabber
+WorkingDirectory=/opt/gabber
+Environment=NODE_ENV=production
+Environment=GABBER_RELAY_HOST=127.0.0.1
+Environment=GABBER_RELAY_PORT=8787
+Environment=GABBER_RELAY_QUEUE_FILE=/var/lib/gabber/relay-queue.json
+ExecStart=/usr/bin/node /opt/gabber/relay/server.js
+Restart=on-failure
+RestartSec=3
+StateDirectory=gabber
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/gabber
+
+[Install]
+WantedBy=multi-user.target

@@ -5,10 +5,19 @@
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
+    "predev": "npm run build:crypto",
     "dev": "vite",
+    "prebuild": "npm run build:crypto",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "relay": "node relay/server.js",
+    "test:relay": "node --test relay/*.test.js",
+    "test:network": "node --test electron/*.test.js",
+    "test:messaging": "node --test src/lib/*.test.js",
+    "test:crypto": "cargo test --manifest-path crypto/Cargo.toml",
+    "build:crypto": "cargo build --manifest-path crypto/Cargo.toml --target wasm32-unknown-unknown --release && wasm-bindgen --target web --out-dir crypto/pkg --out-name gabber_mls crypto/target/wasm32-unknown-unknown/release/gabber_mls.wasm",
+    "test:crypto:wasm": "npm run build:crypto && node --test crypto/wasm-smoke.test.js"
   },
   "dependencies": {
     "@noble/curves": "^2.4.0",
@@ -17,7 +26,8 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4.3.3",
-    "uint8arrays": "^6.1.1"
+    "uint8arrays": "^6.1.1",
+    "ws": "^8.22.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -30,6 +40,7 @@
     "eslint-plugin-react-refresh": "^0.5.6",
     "globals": "^17.12.0",
     "vite": "^8.3.0",
-    "vite-plugin-electron": "^1.1.2"
+    "vite-plugin-electron": "^1.1.2",
+    "vite-plugin-electron-renderer": "^1.0.0"
   }
 }
